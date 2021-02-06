@@ -1,0 +1,21 @@
+default: &default
+  application_name: "<project-name>"
+  domain_name: "localhost:3000"
+  host_url: "http://localhost:3000"
+  redis:
+    namespace: "<project-name>-redis"
+    host: localhost
+    port: 6379
+    db: 0
+    password:
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  application_name: "<%= ENV['APP_NAME'] %>"
+  domain_name: "<%= ENV['DOMAIN_NAME_PRODUCTION'] %>"
+  host_url: "<%= ENV['HOST_URL_PRODUCTION'] %>"
