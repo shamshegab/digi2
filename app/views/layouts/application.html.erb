@@ -1,15 +1,51 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>DigitalScan</title>
+    <title><%= content_for?(:title) ? yield(:title) : "About Sharks" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application' %>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" /> 
   </head>
-
   <body>
-    <%= yield %>
+    <div id="mySidenav" class="sidenav">
+      <a class="navbar-brand" href=<%=root_path%>><strong>Digital Dental Scan</strong></a>
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a  href=<%=users_index_path%>>Users</a>
+      <a  href=<%=referring_doctors_path%>>Referring Doctors</a>
+      <a  href=<%=items_path%>>Items</a>
+      <a  href=<%=patients_path%>>Patients</a>
+      <a  href=<%=cases_path%>>Cases</a>
+      <a  href=<%=reports_path%>>Reports</a>
+      <br>
+      <span   style="color:white !important;">
+        <%= link_to "Sign Out", destroy_user_session_path, :method => :delete, :class => "navbar-brand" %>
+      </span>
+    </div>
+    <!-- Use any element to open the sidenav -->
+
+    <a style="cursor:pointer;  color:#46A0D4;margin:20px" onclick="openNav()" ><i style="font-size:44px;" class="material-icons">menu</i></a>
+    <%# <span style="background-color:red;"  >open</span> %>
+    <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <div lass="container main-container" style="background-color: #f3f3f3; height:100%;min-height:90vh;" id="main">
+      <%= yield %>
+    </div>
+    
+    <script>
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "300px";
+        document.getElementById("main").style.marginLeft = "300px";
+      }
+      
+      /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+      }
+    </script>
   </body>
 </html>

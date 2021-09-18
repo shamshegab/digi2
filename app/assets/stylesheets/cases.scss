@@ -1,0 +1,56 @@
+// Place all the styles related to the Cases controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.lightbox {
+    /* Default to hidden */
+    display: none;
+    /* Overlay entire screen */
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* A bit of padding around image */
+    padding: 1em;
+    /* Translucent background */
+    background: rgba(0, 0, 0, 0.8);
+}
+
+
+/* Unhide the lightbox when it's the target */
+
+.lightbox:target {
+    display: block;
+}
+
+.lightbox span {
+    /* Full width and height */
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* Size and position background image */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+html,
+body {
+    font-family: sans-serif;
+    font-size: 19px;
+    color: #aaa;
+    text-align: center;
+}
+
+a:hover {
+    color: #bbb;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.small {
+    font-size: 0.8em;
+}

@@ -1,0 +1,53 @@
+
+<%= form_with(model: referring_doctor, local: true) do |form| %>
+  <% if referring_doctor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(referring_doctor.errors.count, "error") %> prohibited this referring_doctor from being saved:</h2>
+
+      <ul>
+        <% referring_doctor.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name,{:class => 'form-control'} %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :email %>
+    <%= form.text_field :email,{:class => 'form-control'} %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :address %>
+    <%= form.text_area :address,{:class => 'form-control'} %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :phone %>
+    <%= form.text_field :phone,{:class => 'form-control'} %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :mobile %>
+    <%= form.text_field :mobile,{:class => 'form-control'} %>
+  </div>
+
+   <div class="form-group">
+    <%= form.label :clinic %>
+    <%= form.text_field :clinic,{:class => 'form-control'} %>
+  </div>
+
+   <div class="form-group">
+    <%= form.label :birthdate %>
+    <%= form.date_field :birthdate,{:class => 'form-control'} %>
+  </div>
+
+  <div class="actions row justify-content-end">
+    <%= form.submit "Submit", :class => "btn btn-success" %>
+  </div>
+<% end %>

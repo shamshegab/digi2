@@ -1,0 +1,47 @@
+
+
+
+<p id="notice"><%= notice %></p>
+<div class="col-lg-12">
+        	<div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                <h3 class="col-10">User Roles</h3>
+                <%= link_to 'New User Role', new_user_role_path, class: 'btn btn-success' %>
+                </div>
+            </div>
+            <div class="panel-body">
+<table class="table table-condensed" style="border-collapse:collapse;">
+
+    <thead class="thead-light">
+        <tr><th>&nbsp;</th>
+            <th>Title</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+
+    <tbody class="table-striped table-hover"> 
+          <% for role in @user_roles %>        
+          
+
+        
+        <tr>
+            <td><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></td>
+            <td><%= role.title %></td>
+            
+            <td><%= link_to 'Destroy', role, method: :delete, data: { confirm: 'Are you sure you want to delete this role?' } %></td>
+          
+
+        </tr>
+  
+        
+        <% end %>
+    </tbody>
+    
+</table>
+            </div>
+        
+          </div> 
+        
+      </div>

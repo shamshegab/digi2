@@ -1,0 +1,21 @@
+# == Schema Information
+#
+# Table name: items
+#
+#  id            :bigint           not null, primary key
+#  title         :string
+#  default_price :integer
+#  available     :boolean
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
+one:
+  title: MyString
+  default_price: 1
+  available: false
+
+two:
+  title: MyString
+  default_price: 1
+  available: false

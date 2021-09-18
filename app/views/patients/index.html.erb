@@ -1,0 +1,81 @@
+<p id="notice"><%= notice %></p>
+<div class="col-lg-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <h3 class="col-10">Patients</h3>
+        <div class="col-2">
+        <button  class='btn btn-success' style="border-radius: 50%;line-height: 0px;color:white"><a style="color:white;" href=<%=new_patient_path%>><i class="material-icons">add</i></a></button>
+        <button type="button" class="btn btn-warning" style="border-radius:50%;line-height:0;" data-toggle="modal" data-target="#filterModel"><i class="material-icons">filter_list</i></button>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed" style="border-collapse:collapse;">
+        <thead >
+          <tr>
+            <th>Mobile</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+        <tbody class="table-striped table-hover">
+          <% @patients.each do |patient| %>
+            <tr>
+              <td><%= patient.mobile %></td>
+              <td><%= patient.name %></td>
+              <td><%= patient.address %></td>
+              <td><%= patient.email %></td>
+              <td><%= link_to patient_path(patient) do %>
+                  <i class="material-icons">visibility</i>
+                <%end  %>
+              </td>
+              <td><%= link_to edit_patient_path(patient) do %>
+                  <i class="material-icons">edit</i>
+                <%end %>
+              </td>
+              <td><%= link_to patient, method: :delete, data: { confirm: 'Are you sure?' } do %>
+                  <i class="material-icons">delete</i>
+                <%end  %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row justify-content-end">
+  <%= paginate @patients %>
+  </div>
+</div>
+<div class="modal fade" id="filterModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Filter Patients</h2>
+      </div>
+      <div class="modal-body">
+        <%= search_form_for @q do |f| %>
+        <div align="end">
+        <%= link_to "Reset", request.path, class:"cancel-button" %>
+        </div>
+          <div class="form-group">
+            <%= f.label :name_cont %>
+            <%= f.search_field :name_cont, {:class => 'form-control'} %>
+          </div>
+          <div class="form-group">
+            <%= f.label :mobile_cont %>
+            <%= f.search_field :mobile_cont, {:class => 'form-control'} %>
+          </div>
+          <div class="form-group">
+            <%= f.label :email_cont %>
+            <%= f.search_field :email_cont, {:class => 'form-control'} %>
+          </div>
+          <%= f.submit "Search", :class => "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

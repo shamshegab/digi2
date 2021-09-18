@@ -1,0 +1,184 @@
+<p id="notice"><%= notice %></p>
+<div class="container">
+  <%= link_to  patients_path do%>
+    <i class="material-icons">arrow_back</i>
+  <%end %>
+  <br>
+  <h2>
+    <%= @patient.name %>
+  </h2>
+  <p>
+    <strong>Mobile:</strong>
+    <%= @patient.mobile %>
+  </p>
+  <p>
+    <strong>Address:</strong>
+    <%= @patient.address %>
+  </p>
+  <p>
+    <strong>Email:</strong>
+    <%= @patient.email %>
+  </p>
+  <hr/>
+  <div class="container">
+    <div class="row">
+      <div class="col-10">
+        <h3>Cases</h3>
+      </div>
+      <div class="col-2">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addCaseModel">New Case</button>
+      </div>
+    </div>
+    <hr>
+    <div>
+      <div class="list-group">
+        <%@patient.cases.order("created_at DESC").each do |patient_case| %>
+          <a href="<%=case_path(patient_case)%>" class="list-group-item list-group-item-action">
+          <p>Case Number : <%= patient_case.id %>  - Created At: <%= patient_case.created_at %></p>
+        </a>
+      <%end %>
+    </div>
+  </div>
+  <div class="modal fade" id="addCaseModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p id="notice"><%= notice %></p>
+          <h5 class="modal-title" id="exampleModalLabel">Add a new Case</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <%= form_with url: "/cases", method: :post do  |form| %>
+            <div class="form-group">
+              <label for="note">Note</label>
+              <textarea  name="note" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="image">Image</label>
+              <%= form.file_field :image, :class => "form-control" %>
+            </div>
+            <div class="form-group">
+              <label for="referring_doctor_id">Referring doctor</label>
+              <%= select_tag "referring_doctor_id", options_from_collection_for_select(ReferringDoctor.all, "id", "name"), { :include_blank => '-- Select One --', :class => "form-control", :required => true  } %>
+            </div>
+            <div class="form-group">
+              <label for="technition_id">Technition</label>
+      
+        
+              <%= select_tag "technition_id", options_from_collection_for_select(User.technitions, "id", "name"), { :include_blank => '-- Select One --', :class => "form-control", :required => true  }  %>
+            
+          
+            </div>
+            <div class="form-group">
+              <label for="note">Doctor</label>
+              <%= select_tag "doctor_id", options_from_collection_for_select(User.doctors, "id", "name"), { :include_blank => '-- Select One --', :class => "form-control", :required => true  }  %>
+            </div>
+            <div class="form-group">
+            <label for="discount">Discount</label>
+           
+              <input type="number" value="0.0" name="discount" class="form-control"/>
+   
+          </div>
+            <input hidden name="patient_id" value="<%=@patient.id%>"/>
+          <div class="field_wrapper">
+            <div class="row" >
+              <div class="col-6">
+                <label for="note">
+                  <strong>Items</strong>
+                </label>
+              </div>
+              <div class="col-6 justify-content-end" style="text-align:end;">
+                <a  class="add_button btn btn-success" style="padding:0px;padding-top:0.3rem;border-radius:50%;height:40px;width:40px;color:white;">
+                  <i class="material-icons">add</i>
+                </a>
+              </div>
+            </div>
+            <div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input  type="submit" class="btn btn-success"/>
+        </div>
+      <%end %>
+    </div>
+  </div>
+</div>
+</div>
+
+<script type="text/javascript">
+function test(item){
+     console.log(item.id);
+     var id = item.id.substring(6)
+     console.log(id);
+  
+     $.ajax({
+    type:"GET",
+    url:"/items/"+item.value,
+    dataType:"json",
+  
+  
+    success:function(result){
+  	 console.log(result);
+      $('#p'+id).val(result.price)
+  
+    },
+    error: function(er){
+  	  console.log(er);
+  
+    }
+  })
+  
+  
+  
+   }
+  $(document).ready(function(){
+    
+  
+      var maxField = 30; //Input fields increment limitation
+      var addButton = $('.add_button'); //Add button selector
+      var wrapper = $('.field_wrapper'); //Input field wrapper
+      var x = 1;
+  
+  
+  
+      //Once add button is clicked
+      $(addButton).click(function(){
+        // console.log("hi");
+  
+        var fieldHTML = '<div class="row" style="margin-top:8px;margin-right:5px;margin-left:5px;"><select required=true name="used_items_attributes[]" onchange="test(this)"  id="items_'+x+'" class="form-control col-8 itemSelect" required="required">'+
+                        '<option value="">-- Select One --</option>'
+                        <%Item.where(available: true).each do |item|%>
+                        +'<option value="<%=item.id%>"><%=item.title%></option>'
+                        <%end%>
+                        +'</select>'
+                        +'<input type=\'number\' id="p'+x+'" required=true class="form-control col-3" name="price[]" />'
+                        + '<a class="col-1 remove_button" style="margin-top:2px;cursor: pointer; color: red;"><i class="material-icons">delete</i></a> </div>'
+          //Check maximum number of input fields
+          if(x < maxField){
+              x++; //Increment field counter
+              $(wrapper).append(fieldHTML); //Add field html
+          }
+      });
+  
+   
+      $(wrapper).on('click', '.remove_button', function(e){
+          e.preventDefault();
+          $(this).parent('div').remove(); 
+  
+      });
+  });
+</script>
+<script>
+  function addCase(form) {
+  
+    console.log("adding case");
+    console.log($("form").serializeArray());
+  
+    return false;
+  
+  }
+</script>

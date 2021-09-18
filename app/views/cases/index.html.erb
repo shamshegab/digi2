@@ -1,0 +1,93 @@
+<p id="notice"><%= notice %></p>
+<div class="col-lg-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <h3 class="col-10">Cases</h3>
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#filterModel">Filter</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed" style="border-collapse:collapse;">
+        <thead >
+          <tr>
+            <th>Id</th>
+            <th>Patient Name</th>
+            <th>Patient Mobile</th>
+            <th>Created At:</th>
+            <th>Ended At:</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+        <tbody class="table-striped table-hover">
+          <% @cases.each do |patient_case| %>
+            <tr>
+              <td><%= patient_case.id %></td>
+              <td><%= patient_case.patient.name %></td>
+              <td><%= patient_case.patient.mobile %></td>
+              <td><%= patient_case.created_at %></td>
+              <td><%= patient_case.ended %></td>
+              <td><%= link_to case_path(patient_case) do %>
+                  <i class="material-icons">visibility</i>
+                <%end  %>
+              </td>
+              <% if patient_case.ended.blank? %>
+                <td><%= link_to end_case_path(patient_case), method: :post,data: { confirm: 'Are you sure?' } do %>
+                    <i class="material-icons">alarm_on</i>
+                  <%end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+   <div class="row justify-content-end">
+  <%= paginate @cases %>
+  </div>
+</div>
+<div class="modal fade" id="filterModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Filter Patients</h2>
+      </div>
+      <div class="modal-body">
+        <%= search_form_for @q do |f| %>
+        <div align="end">
+        <%= link_to "Reset", request.path, class:"cancel-button" %>
+        </div>
+          <div class="form-group">
+            <%= f.label :patient_name_cont %>
+            <%= f.search_field :patient_name_cont, {:class => 'form-control'} %>
+          </div>
+           <div class="form-group">
+            <%= f.label :referring_doctor_name_cont %>
+            <%= f.search_field :referring_doctor_name_cont, {:class => 'form-control'} %>
+          </div>
+          <div class="form-group">
+            <%= f.label :technition_name_cont, "Technition Name containes" %>
+            <%= f.search_field :technition_name_cont, {:class => 'form-control'} %>
+          </div>
+           <div class="form-group">
+            <%= f.label :doctor_name_cont, "Doctor Name containes" %>
+            <%= f.search_field :doctor_name_cont, {:class => 'form-control'} %>
+          </div>
+            <div class="form-group">
+            <%= f.label "Created after date" %>
+            <%= f.date_field :created_at_gteq, {:class => 'form-control'} %>
+          </div>
+           <div class="form-group">
+            <%= f.label "Created before date" %>
+            <%= f.date_field :created_at_lteq, {:class => 'form-control'} %>
+          </div>
+         
+          <%= f.submit %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>

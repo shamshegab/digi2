@@ -1,0 +1,22 @@
+<div class="container">
+<form id="report-form">
+    <div class="form-group">
+        <label name="From">From</label>
+        <input type="date" class="form-control" name="From"/>
+    </div>
+    <div class="form-group">
+        <label name="To">To</label>
+        <input type="date" class="form-control" name="To"/>
+    </div>
+    <input type="submit" class="btn btn-success"/>
+</form>
+</div>
+
+<script>
+
+$( "#report-form" ).submit(function( event ) {
+  console.log($( "#report-form" ).serialize());
+  window.location = '/generate_reports?'+$( "#report-form" ).serialize()
+  event.preventDefault()
+});
+</script>

@@ -1,0 +1,24 @@
+# == Schema Information
+#
+# Table name: patients
+#
+#  id         :bigint           not null, primary key
+#  mobile     :string
+#  name       :string
+#  address    :text
+#  email      :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+one:
+  mobile: MyString
+  name: MyString
+  address: MyText
+  email: MyString
+
+two:
+  mobile: MyString
+  name: MyString
+  address: MyText
+  email: MyString

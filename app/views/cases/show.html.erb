@@ -1,0 +1,405 @@
+<p id="notice"><%= notice %></p>
+<div class="container">
+  <% if current_user.secertary? || current_user.admin? || current_user.accounting? %>
+    <div class="row justify-content-end" style="text-align: end;">
+      <button class="btn btn-primary"  data-toggle="modal" data-target="#editCaseInfoModel">Edit</button>
+    </div>
+  <% end %>
+  <div id="accordion">
+    <div class="card">
+      <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#patientDetails" aria-expanded="true" aria-controls="collapseOne">
+        <h5 class="mb-0">
+          <button class="btn" data-toggle="collapse" data-target="#patientDetails" aria-expanded="true" aria-controls="collapseOne">
+            Patient Details
+          </button>
+        </h5>
+      </div>
+      <div id="patientDetails" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <p>
+                <strong>Patient:</strong>
+                <%= @case.patient.name %>
+              </p>
+            </div>
+            <div class="col-lg-4">
+              <p>
+                <strong>Email:</strong>
+                <%= @case.patient.email %>
+              </p>
+            </div>
+            <div class="col-lg-4">
+              <p>
+                <strong>Mobile:</strong>
+                <%= @case.patient.mobile %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#doctorDetails" aria-expanded="true" aria-controls="collapseOne">
+          <h5 class="mb-0">
+            <button class="btn">
+              Referring Doctor Details
+            </button>
+          </h5>
+        </div>
+        <div id="doctorDetails" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-4">
+                <p>
+                  <strong>Name:</strong>
+                  <%= @case.get_referring_doctor.name %>
+                </p>
+              </div>
+              <div class="col-lg-4">
+                <p>
+                  <strong> Email:</strong>
+                  <%= @case.get_referring_doctor.email %>
+                </p>
+              </div>
+              <div class="col-lg-4">
+                <p>
+                  <strong>Mobile:</strong>
+                  <%= @case.get_referring_doctor.mobile %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#caseDetails" aria-expanded="true" aria-controls="collapseOne">
+          <h5 class="mb-0">
+            <button class="btn " >
+              Case Details
+            </button>
+          </h5>
+        </div>
+        <div id="caseDetails" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <p>
+                  <strong>Created At:</strong>
+                  <%= @case.created_at %>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <p>
+                  <strong>Ended:</strong>
+                  <% if @case.ended.present? %>
+                    <%= @case.ended %>
+                  <% else %>
+                    <%= link_to end_case_path(@case), method: :post do %>
+                      <i class="material-icons">alarm_on</i>
+                    <%end %>
+                  <%end %>
+                </p>
+              </div>
+              <div class="col-lg-4">
+                <p>
+                  <strong>Contacted:</strong>
+                  <% if @case.contacted.present? %>
+                    <%= @case.contacted %>
+                  <% else %>
+                    <%= link_to contacted_case_path(@case), method: :post do %>
+                      <i class="material-icons">alarm_on</i>
+                    <%end %>
+                  <%end %>
+                </p>
+              </div>
+              <div class="col-lg-4">
+                <p>
+                  <strong>Reported:</strong>
+                  <% if @case.reported.present? %>
+                    <%= @case.reported %>
+                  <% else %>
+                    <%= link_to reported_case_path(@case) , method: :post do %>
+                      <i class="material-icons">alarm_on</i>
+                    <%end %>
+                  <%end %>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <p>
+                  <strong>Owner:</strong>
+                  <%= @case.owner.name %>
+                </p>
+              </div>
+              <div class="col-lg-4">
+                <p>
+                  <strong>Technition:</strong>
+                  <%= @case.technition.name %>
+                </p>
+              </div>
+              <div class="col-lg-4">
+                <p>
+                  <strong>Doctor:</strong>
+                  <%= @case.doctor.name %>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <strong>Note:</strong>
+                <%= simple_format(@case.note) %>
+              </div>
+            </div>
+            <% if @case.image.present? %>
+              <div class="row">
+                <div class="col-lg-12">
+                
+                  <!-- lightbox container hidden with CSS -->
+                   <a href="<%=  @case.image.url %>" ><%= image_tag @case.image.small.url %></a>
+                  
+      </div>
+    </div>
+  <%end %>
+          <br>
+          <div class="row">
+            <div class="col-6">
+              <h3>Items</h3>
+            </div>
+            <% if current_user.admin? || current_user.accounting? %>
+              <div class="col-6 justify-content-end" style="text-align: end;">
+                <button class="btn btn-primary"  data-toggle="modal" data-target="#addCaseModel">Edit</button>
+              </div>
+            <% end %>
+          </div>
+          <hr/>
+          <%@case.used_items.each do |item| %>
+            <div class="row">
+              <div class="col-lg-6">
+                <p><%= item.item.title %>
+                </div>
+                <div class="col-lg-6">
+                  <p><%= item.price_before_discount %> EGP</p>
+                </div>
+              </div>
+            <%end %>
+              <div class="row" >
+              <div class="col-lg-6">
+              </div>
+              <div class="col-lg-6">
+                <p>Discount: <strong> <%= @case.discount %>%</strong></p>
+              </div>
+            </div>
+            <div class="row" >
+              <div class="col-lg-6">
+              </div>
+              <div class="col-lg-6">
+                <p>Total: <strong> <%= @total_price %> EGP</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+
+</div>
+
+<div class="modal fade" id="editCaseInfoModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p id="notice"><%= notice %></p>
+        <h5 class="modal-title" id="exampleModalLabel">Edit Case Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+          <%= form_for @case, method: :put do  |form| %>
+          <div class="form-group">
+            <label for="note">Note</label>
+            <%= form.text_area :note,{:class => "form-control"} %>
+          </div>
+            <div class="form-group">
+            <label for="image">Image</label>
+            <%= form.file_field :image %>
+          </div>
+          <div class="form-group">
+            <label for="referring_doctor">Referring doctor</label>
+            <%# <%= select_tag "referring_doctor_id", options_from_collection_for_select(ReferringDoctor.all, "id", "name"), { :include_blank => '-- Select One --', :class => "form-control", :required => true  } %>
+            <%= form.collection_select(:referring_doctor, ReferringDoctor.all, :id, :name,{}, {:class => "form-control"}) %>
+          </div>
+          <div class="form-group">
+            <label for="technition">Technition</label>
+             <%= form.collection_select(:technition, User.technitions, :id, :name,{}, {:class => "form-control"}) %>
+            
+          </div>
+          <div class="form-group">
+            <label for="doctor">Doctor</label>
+           <%= form.collection_select(:doctor, User.doctors, :id, :name,{}, {:class => "form-control"}) %>
+           
+          </div>
+         
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <input type="submit"/>
+    </div>
+ <%end %>
+</div>
+</div>
+</div>
+
+
+<div  class="modal fade" id="addCaseModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div  class="modal-content">
+      <div class="modal-header">
+        <p id="notice"><%= notice %></p>
+        <h5 class="modal-title" id="exampleModalLabel">Update Case Items</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+    
+  <%= form_with url: "/case/"+@case.id.to_s+"/items", method: :put do |form| %>
+
+          
+      <div class="field_wrapper">
+        <div class="row">
+        <div class="col-12">
+          <div class="form-group">
+            <label for="discount">Discount</label>
+            
+            <% if @case.discount.present? %>
+              <input type="number" value=<%=@case.discount%> name="discount" class="form-control"/>
+            <% else %>
+              <input type="number" value="0.0" name="discount" class="form-control"/>
+            <%end %>
+          </div>
+          </div>
+        </div>
+        <div class="row" >
+          <div class="col-6">
+            <label for="note">
+              <strong>Items</strong>
+            </label>
+          </div>
+          <div class="col-6 justify-content-end" style="text-align:end;">
+            <a  class="add_button btn btn-success" style="padding:0px;padding-top:0.3rem;border-radius:50%;height:40px;width:40px;color:white;">
+              <i class="material-icons">add</i>
+            </a>
+          </div>
+        </div>
+      <br>
+        <div>
+          <%@case.used_items.each do |used_item| %>
+          <div class="row" style="margin-right:5px;margin-left:5px;">
+            <select name="used_items_attributes[]" onchange="test(this)"  id="usedi_<%=used_item.id%>" class="form-control col-8 itemSelect" required="required">
+              <%Item.where(available: true).each do |item|%>
+                <% if item.id == used_item.item.id %>
+                  <option value="<%=item.id%>" selected><%=item.title%></option>
+                <% else %>
+                  <option value="<%=item.id%>"><%=item.title%></option>
+                <%end%>
+              <%end%>
+            </select>
+            <input type='number' id="up<%=used_item.id%>" class="form-control col-3" name="price[]" value="<%=used_item.price_before_discount%>" />
+                    <a class="col-1 remove_button" style="margin-top:2px;cursor: pointer; color: red;"><i class="material-icons">delete</i></a>
+                  </div>
+                <%end %>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <%= form.submit "Submit", :class=> "btn btn-secondary" %>
+          </div>
+        <%end %>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    function test(item){
+       console.log(item.id);
+       var id = item.id.substring(6)
+       console.log(id);
+    
+       $.ajax({
+      type:"GET",
+      url:"/items/"+item.value,
+      dataType:"json",
+    
+    
+      success:function(result){
+    	 console.log(result);
+       if(item.id.substring(0,5)=="usedi"){
+         $('#up'+id).val(result.price)
+       }else{
+        $('#p'+id).val(result.price)
+       }
+    
+      },
+      error: function(er){
+    	  console.log(er);
+    
+      }
+    })
+    
+    
+    
+     }
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+    
+        var maxField = 30; //Input fields increment limitation
+        var addButton = $('.add_button'); //Add button selector
+        var wrapper = $('.field_wrapper'); //Input field wrapper
+        var x = 1;
+        //Once add button is clicked
+        $(addButton).click(function(){
+          // console.log("hi");
+    
+          var fieldHTML = '<div class="row" style="margin-right:5px;margin-left:5px;"><select name="used_items_attributes[]" onchange="test(this)"  id="items_'+x+'" class="form-control col-8 itemSelect" required="required">'+
+                          '<option value="">-- Select One --</option>'
+                          <%Item.where(available: true).each do |item|%>
+                          +'<option value="<%=item.id%>"><%=item.title%></option>'
+                          <%end%>
+                          +'</select>'
+                          +'<input type=\'number\' id="p'+x+'" class="form-control col-3" name="price[]" />'
+                          +' <a class="col-1 remove_button" style="margin-top:2px;cursor: pointer; color: red;"><i class="material-icons">delete</i></a>  </div>'
+            //Check maximum number of input fields
+            if(x < maxField){
+                x++; //Increment field counter
+                $(wrapper).append(fieldHTML); //Add field html
+            }
+        });
+    
+        //Once remove button is clicked
+        $(wrapper).on('click', '.remove_button', function(e){
+            e.preventDefault();
+            $(this).parent('div').remove(); //Remove field html
+    
+        });
+    });
+  </script>
+  <script>
+    function addCase(form) {
+    
+      console.log("adding case");
+      console.log($("form").serializeArray());
+    
+      return false;
+    
+    }
+  </script>

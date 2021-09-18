@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @referring_doctor.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @referring_doctor.email %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @referring_doctor.address %>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  <%= @referring_doctor.phone %>
+</p>
+
+<%= link_to 'Edit', edit_referring_doctor_path(@referring_doctor) %> |
+<%= link_to 'Back', referring_doctors_path %>
