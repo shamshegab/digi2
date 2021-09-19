@@ -26,8 +26,8 @@ gem 'ransack'
 gem 'carrierwave', '~> 2.0'
 gem 'kaminari'
 gem 'select2-rails'
-
-
+gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
+gem 'ed25519', '1.2'
 gem 'capistrano', '~> 3.11'
 gem 'capistrano-rails', '~> 1.4'
 gem 'capistrano-passenger', '~> 0.2.0'

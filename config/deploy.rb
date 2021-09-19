@@ -2,7 +2,7 @@
 lock "~> 3.16.0"
 
 set :application, "DigitalScan"
-set :repo_url, "git@bitbucket.org:ShamsHegab/digitalscan.git"
+set :repo_url, "git@github.com:shamshegab/DigitalScan.git"
 
 # Deploy to the user's home directory
 set :deploy_to, "/home/deploy/#{fetch :application}"
